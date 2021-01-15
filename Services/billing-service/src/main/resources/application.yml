@@ -1,0 +1,13 @@
+server:
+  port: 8084
+spring:
+  application:
+    name: billing-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/msdb-billing
+    username: root
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create
+

@@ -1,0 +1,12 @@
+server:
+  port: 8085
+spring:
+  application:
+    name: sec-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/msdb-sec
+    username: root
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create
