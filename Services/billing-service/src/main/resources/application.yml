@@ -4,10 +4,19 @@ spring:
   application:
     name: billing-service
   datasource:
-    url: jdbc:mysql://localhost:3306/msdb-billing
+    url: jdbc:mysql://localhost:3306/msdb
     username: root
     password:
   jpa:
     hibernate:
       ddl-auto: create
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
 

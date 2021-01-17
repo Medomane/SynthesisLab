@@ -1,0 +1,13 @@
+server:
+  port: 8986
+spring:
+  application:
+    name: products-app
+  datasource:
+    url: jdbc:mysql://localhost:3306/suppliers-app
+    username: root
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create
+

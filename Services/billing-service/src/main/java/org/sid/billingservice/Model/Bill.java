@@ -21,10 +21,10 @@ public class Bill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id ;
     private Date Date;
-    @JsonIgnore
     private Long customerId;
+    @JsonIgnore
     @Transient
     private Customer customer;
     @OneToMany(mappedBy = "bill")
-    private Collection<BillLine> billLines;
+    private Collection<Order> orders;
 }

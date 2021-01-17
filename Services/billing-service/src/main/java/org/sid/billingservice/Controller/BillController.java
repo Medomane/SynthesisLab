@@ -23,7 +23,7 @@ public class BillController {
     public Bill getBill(@PathVariable Long id){
         Bill bill = billRepository.findById(id).get();
         bill.setCustomer(customerRestClient.getCustomerById(bill.getCustomerId()));
-        bill.getBillLines().forEach(bl ->{
+        bill.getOrders().forEach(bl ->{
             bl.setProduct(productRestClient.getProductById(bl.getProductId()));
         });
         return bill;

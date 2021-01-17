@@ -1,5 +1,5 @@
 package ma.enset.supplierservice;
-import ma.enset.supplierservice.entities.Supplier;
+import ma.enset.supplierservice.models.Supplier;
 import ma.enset.supplierservice.repositories.SupplierRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -14,10 +14,6 @@ public class SupplierServiceApplication {
     }
     @Bean
     CommandLineRunner lineRunner(SupplierRepository supplierRepository){
-        return args -> {
-            Stream.of("JBOSS","ORACLE","IBM").forEach(n->{
-                supplierRepository.save(new Supplier(null,n,n+"@"+n.toLowerCase()+".com"));
-            });
-        };
+        return args -> Stream.of("JBOSS","ORACLE","IBM").forEach(n-> supplierRepository.save(new Supplier(null,n,n+"@"+n.toLowerCase()+".com")));
     }
 }
