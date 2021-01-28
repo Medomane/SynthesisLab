@@ -9,6 +9,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @SpringBootApplication
 @EnableFeignClients
 public class ProductServiceApplication implements CommandLineRunner {
@@ -30,20 +33,25 @@ public class ProductServiceApplication implements CommandLineRunner {
     @Override
     public void run(String... args) {
         configuration.exposeIdsFor(Product.class);
-        var sup1 = supplierRestClient.getSupplierById(1L);
-        var sup2 = supplierRestClient.getSupplierById(2L);
-        var sup3 = supplierRestClient.getSupplierById(3L);
+        List<String> prods = new ArrayList<>();
+        prods.add("Lenovo");
+        prods.add("HP");
+        prods.add("Dell");
+        prods.add("Apple");
+        prods.add("Acer");
 
-        Product d = productRepository.save(new Product(null,"DELL",2000,10,sup1.getId(),sup1));
-        System.out.println(d.toString());
-        d = productRepository.save(new Product(null,"HP",8000,15,sup1.getId(),sup1));
-        System.out.println(d.toString());
-        d = productRepository.save(new Product(null,"ACER",3000,20,sup1.getId(),sup1));
-        System.out.println(d.toString());
-        d = productRepository.save(new Product(null,"MSI",15000,3,sup2.getId(),sup2));
-        System.out.println(d.toString());
-        d = productRepository.save(new Product(null,"MAC",20000,7,sup3.getId(),sup3));
-        System.out.println(d.toString());
+
+        var list = supplierRestClient.getSuppliers();
+        final int[] counter = {1};
+        list.forEach(sup->{
+            for (int i = counter[0]; i < counter[0] + 5; i++) {
+                var price = Math.random() * (10000 - 1500 + 1) + 1500;
+                var qte = Math.random() * (50 - 1 + 1) + 1;
+                var caption = prods.get((int) Math.ceil(Math.random()*5-1));
+                productRepository.save(new Product(null,caption,Math.round(price),(int)qte,sup.getId(),sup));
+            }
+            counter[0] +=5;
+        });
     }
 
 }

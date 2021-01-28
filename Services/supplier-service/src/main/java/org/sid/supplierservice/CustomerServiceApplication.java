@@ -25,9 +25,9 @@ public class CustomerServiceApplication implements CommandLineRunner {
     @Override
     public void run(String... args) {
         configuration.exposeIdsFor(Supplier.class);
-        supplierRepository.save(new Supplier(null,"Supplier1","supplier1@gmail.com"));
-        supplierRepository.save(new Supplier(null,"Supplier1","supplier2@gmail.com"));
-        supplierRepository.save(new Supplier(null,"Supplier1","supplier@gmail.com"));
+        for(var i=1;i<6;i++){
+            supplierRepository.save(new Supplier(null,"Supplier"+i,"supplier"+i+"@gmail.com"));
+        }
     }
 
 }

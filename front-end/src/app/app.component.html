@@ -1,0 +1,18 @@
+<div class="page-wrapper" [ngClass]="{'toggled' : getSideBarState()}">
+  <app-sidebar></app-sidebar>
+  <main class="page-content">
+    <nav class="navbar navbar-dark bg-dark p-bar">
+      <div>
+        <div class="btn btn-dark" (click)="this.toggleSidebar()"><i class="fas fa-{{this.getSideBarState()?'bars':'times'}}"></i></div>
+      </div>
+      <div class="btn btn-dark">{{this.subTitle}}</div>
+      <div>
+        <a routerLink="/" class="btn btn-dark"><i class="fas fa-home"></i></a>
+        <a href="#" class="btn btn-dark" title="Se déconnecter"><i class="fa fa-power-off"></i></a>
+      </div>
+    </nav>
+    <router-outlet>
+
+    </router-outlet>
+  </main>
+</div>

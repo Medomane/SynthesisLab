@@ -14,6 +14,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 
+import java.util.Calendar;
 import java.util.Date;
 
 @SpringBootApplication
@@ -29,15 +30,25 @@ public class BillingServiceApplication{
         return args ->{
             configuration.exposeIdsFor(Bill.class);
             configuration.exposeIdsFor(Order.class);
-            Bill bill=new Bill();
-            bill.setDate(new Date());
             Customer customer=customerRestClient.getCustomerById(1L);
-            System.out.println(customer.toString());
-            bill.setCustomerId(customer.getId());
-            billRepository.save(bill);
-            productRestClient.pageProducts().getContent().forEach(p->{
-                orderRepository.save(new Order(null,(int)(1+Math.random()*1000),p.getId(),p,bill));
-            });
+            for (int i = 0; i < 3; i++) {
+                Calendar c = Calendar.getInstance();
+                c.setTime(new Date());
+                c.add(Calendar.DATE, -i-10);
+                Bill bill=new Bill();
+                bill.setDate(c.getTime());
+                bill.setCustomerId(customer.getId());
+                billRepository.save(bill);
+                var max = Math.ceil(Math.random()*10)+5;
+                for(var j=0;j<max;j++){
+                    var prod = productRestClient.getProductById((long) Math.ceil(Math.random()*25));
+                    var order = new Order();
+                    order.setBill(bill);
+                    order.setProductId(prod.getId());
+                    order.setQuantity((int) Math.ceil(Math.random()*2));
+                    orderRepository.save(order);
+                }
+            }
         };
     }
 }

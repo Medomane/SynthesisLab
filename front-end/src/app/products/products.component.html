@@ -1,0 +1,63 @@
+<div class="row m-1" *ngIf="products && products.length > 0">
+  <div class="btn btn-primary btn-block m-2 text-center" *ngIf="this.app.getCartsProducts().length > 0">
+    Buy <i class="fas fa-shopping-cart"></i>
+  </div>
+  <div class="card col-3 p-0" *ngFor="let e of this.products">
+    <table>
+      <tr>
+        <td style="height: 296px;text-align: center;">
+          <img src="{{this.url}}icon/{{e.id}}" style="max-width:100%;max-height: 100%;margin:auto;" alt="Card image cap">
+        </td>
+      </tr>
+    </table>
+    <div class="card-body">
+      <h5 class="card-title" style="text-decoration: underline;">{{e.name}}</h5>
+      <p class="card-text"><span style="font-size: 24px;font-weight: bold;">${{e.price/10}}</span> ({{e.quantityAvailable}} in stock)</p>
+    </div>
+    <div class="card-footer">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text btn btn-outline-primary" (click)="open(content,e.supplier)"><i class="fas fa-people-carry"></i></span>
+        </div>
+        <div class="input-group-prepend">
+          <button type="button" [disabled]="e.added" class="input-group-text btn btn-outline-dark" (click)="minus(e)"><i class="fas fa-minus"></i></button>
+        </div>
+        <input type="text" value="{{e.selectedQuantity}}" disabled class="form-control" placeholder="Quantity">
+        <div class="input-group-append">
+          <button type="button" [disabled]="e.added" class="input-group-text btn btn-outline-dark" (click)="plus(e)"><i class="fas fa-plus"></i></button>
+        </div>
+        <div class="input-group-append">
+          <button type="button" (click)="this.addToCart(e)" class="input-group-text btn btn-outline-primary">
+            <i class="fas {{e.added?'fa-trash':'fa-cart-plus'}}"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Supplier detail</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="list-group" *ngIf="this.currentSupplier != null">
+      <a href="javascript:void(0)" class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">Name : </h5>
+        </div>
+        <small>{{this.currentSupplier.name}}</small>
+      </a>
+      <a href="javascript:void(0)" class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">Email : </h5>
+        </div>
+        <small>{{this.currentSupplier.mail}}</small>
+      </a>
+    </div>
+  </div>
+</ng-template>
