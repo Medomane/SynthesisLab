@@ -47,7 +47,24 @@ export class SidebarService {
         subItem.badge.text = this.ordersNumber+'';
         subItem.badge.class = "badge-success";
         item.submenus.push(subItem);
+        this.menus.push(item);
 
+        item = new ItemModule();
+        item.title = "Settings";
+        item.icon = 'fas fa-cogs';
+        item.type = "dropdown";
+        subItem = new ItemModule();
+        subItem.title = "Customers";
+        subItem.link = '/customers';
+        item.submenus.push(subItem);
+        subItem = new ItemModule();
+        subItem.title = "Suppliers";
+        subItem.link = '/suppliers';
+        item.submenus.push(subItem);
+        subItem = new ItemModule();
+        subItem.title = "Products";
+        subItem.link = '/productsCogs';
+        item.submenus.push(subItem);
         this.menus.push(item);
       });
     });
