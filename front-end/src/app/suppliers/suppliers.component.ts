@@ -1,32 +1,32 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AppComponent} from '../app.component';
-import {CustomerService} from './customer.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import Swal from 'sweetalert2';
+import {SupplierService} from './supplier.service';
 
 @Component({
-  selector: 'app-customers',
-  templateUrl: './customers.component.html',
-  styleUrls: ['./customers.component.css']
+  selector: 'app-suppliers',
+  templateUrl: './suppliers.component.html',
+  styleUrls: ['./suppliers.component.css']
 })
-export class CustomersComponent implements OnInit {
+export class SuppliersComponent implements OnInit {
 
   rowData:any[] = [];
   // @ts-ignore
-  public customerForm: FormGroup;
+  public supplierForm: FormGroup;
   public message: string;
   submitted:boolean = false;
   isEditing:boolean = false;
-  constructor(public service:CustomerService,private modalService: NgbModal,public app:AppComponent, private formBuilder: FormBuilder) {
+  constructor(public service:SupplierService,private modalService: NgbModal,public app:AppComponent, private formBuilder: FormBuilder) {
     this.message = '';
   }
 
   ngOnInit(): void {
-    this.service.getCustomers().subscribe(v =>{
+    this.service.getSuppliers().subscribe(v =>{
       // @ts-ignore
-      this.rowData = v._embedded.customers;
-      this.app.subTitle = 'Customers';
+      this.rowData = v._embedded.suppliers;
+      this.app.subTitle = 'Suppliers';
       this.setValidators();
     },(er)=>{
       console.error(er);
@@ -37,32 +37,32 @@ export class CustomersComponent implements OnInit {
     this.submitted = false;
     this.isEditing = false;
     this.message = '';
-    this.customerForm.controls.id.setValue(null);
+    this.supplierForm.controls.id.setValue(null);
     this.modalService.open(content);
   }
   private setValidators() {
-    this.customerForm = this.formBuilder.group({
+    this.supplierForm = this.formBuilder.group({
       id: [''],
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]]
     });
   }
 
-  get f() { return this.customerForm.controls; }
+  get f() { return this.supplierForm.controls; }
 
-  edit(content: any,customer: any) {
+  edit(content: any,supplier: any) {
     this.submitted = false;
     this.message = '';
     this.isEditing = true;
-    this.customerForm.controls["id"].setValue(customer.id);
-    this.customerForm.controls["name"].setValue(customer.name);
-    this.customerForm.controls["email"].setValue(customer.email);
+    this.supplierForm.controls["id"].setValue(supplier.id);
+    this.supplierForm.controls["name"].setValue(supplier.name);
+    this.supplierForm.controls["email"].setValue(supplier.email);
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'});
   }
-  delete(customer: any){
+  delete(supplier: any){
     Swal.fire({
       title: 'Confirmation' ,
-      text: 'Do you really wanna delete '+customer.name+'?',
+      text: 'Do you really wanna delete '+supplier.name+'?',
       icon: 'warning',
       showCancelButton: true,
       cancelButtonText: 'Cancel',
@@ -71,13 +71,13 @@ export class CustomersComponent implements OnInit {
       confirmButtonText: 'Yes!'
     }).then((result) => {
       if (result.value) {
-        this.service.deleteCustomer(customer.id).subscribe(() => {
+        this.service.deleteSupplier(supplier.id).subscribe(() => {
           Swal.fire(
             'Success!',
             'Deleted successfully!',
             'success'
           ).then(()=>{
-            this.rowData.splice(this.rowData.indexOf(customer),1);
+            this.rowData.splice(this.rowData.indexOf(supplier),1);
           });
         }, error => { console.error(error) ; this.message = error.message; });
       }
@@ -88,8 +88,8 @@ export class CustomersComponent implements OnInit {
   onSubmit() {
     this.message = '';
     this.submitted = true;
-    if (this.customerForm.invalid) { return; }
-    this.service.saveCustomer(this.customerForm.value).subscribe(v1 => {
+    if (this.supplierForm.invalid) { return; }
+    this.service.saveSupplier(this.supplierForm.value).subscribe(v1 => {
       if(!this.isEditing) {
         this.rowData.push(v1);
         this.message = "Added successfully.";
@@ -111,7 +111,7 @@ export class CustomersComponent implements OnInit {
 
   onReset() {
     this.submitted = false;
-    this.customerForm.reset();
+    this.supplierForm.reset();
   }
 
 }

@@ -4,8 +4,10 @@ import {HomeComponent} from './home/home.component';
 import {ProductsComponent} from './products/products.component';
 import {OrdersComponent} from './orders/orders.component';
 import {CustomersComponent} from './customers/customers.component';
+import {SuppliersComponent} from './suppliers/suppliers.component';
 
 const routes: Routes = [
+  {path: 'suppliers', component: SuppliersComponent},
   {path: 'customers', component: CustomersComponent},
   {path: 'bills', component: OrdersComponent},
   {path: 'products', component: ProductsComponent},

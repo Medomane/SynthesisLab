@@ -20,13 +20,13 @@
 
 <ng-template #content let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">{{isEditing?"Edit":"Add"}} Customer</h4>
+    <h4 class="modal-title" id="modal-basic-title">{{isEditing?"Edit":"Add"}} Supplier</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    <form [formGroup]="customerForm" (ngSubmit)="this.onSubmit()">
+    <form [formGroup]="supplierForm" (ngSubmit)="this.onSubmit()">
       <input type="hidden" formControlName="id" class="form-control" />
       <div class="alert alert-danger" *ngIf="message && message != ''">{{message}}</div>
       <div class="form-row">

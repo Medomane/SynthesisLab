@@ -20,6 +20,7 @@ import {NgbAlertModule} from '@ng-bootstrap/ng-bootstrap';
 import { OrdersComponent } from './orders/orders.component';
 import { CustomersComponent } from './customers/customers.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import { SuppliersComponent } from './suppliers/suppliers.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -32,7 +33,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     HomeComponent,
     ProductsComponent,
     OrdersComponent,
-    CustomersComponent
+    CustomersComponent,
+    SuppliersComponent
   ],
   imports: [
     BrowserModule,
