@@ -33,7 +33,8 @@ public class ProductController {
 
     @GetMapping(value = "/icon/{id}",produces = MediaType.IMAGE_JPEG_VALUE)
     public byte[] image(@PathVariable Long id) throws Exception {
-        return Files.readAllBytes(Paths.get(new File(System.getProperty("user.home")+"/e-commerce/products/"+id+".jpg").toURI()));
+        var prod = productRepository.findById(id).get();
+        return Files.readAllBytes(Paths.get(new File(System.getProperty("user.home")+"/e-commerce/products/"+id+"("+prod.getName()+").jpg").toURI()));
     }
     @PostMapping(value = "saveProduct")
     public Product upload(@RequestParam String product ,@RequestParam(value = "image",required = false) MultipartFile file) throws IOException {
@@ -42,7 +43,7 @@ public class ProductController {
         obj.setSupplierId(obj.getSupplier().getId());
         var prod = productRepository.save(obj);
         prod.setSupplier(supplierRestClient.getSupplierById(obj.getSupplier().getId()));
-        if(file != null) saveFile(System.getProperty("user.home")+"/e-commerce/products", prod.getId()+".jpg", file);
+        if(file != null) saveFile(System.getProperty("user.home")+"/e-commerce/products", prod.getId()+"("+prod.getName()+").jpg", file);
         return prod;
     }
     @PostMapping(value = "save")
