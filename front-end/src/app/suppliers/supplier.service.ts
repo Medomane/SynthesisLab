@@ -15,7 +15,6 @@ export class SupplierService {
     return this.http.post(this.path + 'suppliers', data);
   }
   deleteSupplier(id:any) {
-    console.log(id);
     return this.http.delete(this.path + 'suppliers/' + id);
   }
 }

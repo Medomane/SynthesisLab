@@ -21,6 +21,7 @@ import { OrdersComponent } from './orders/orders.component';
 import { CustomersComponent } from './customers/customers.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import { SuppliersComponent } from './suppliers/suppliers.component';
+import { ProductsCogComponent } from './products-cog/products-cog.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -34,7 +35,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ProductsComponent,
     OrdersComponent,
     CustomersComponent,
-    SuppliersComponent
+    SuppliersComponent,
+    ProductsCogComponent
   ],
   imports: [
     BrowserModule,
