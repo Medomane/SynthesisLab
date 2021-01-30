@@ -20,7 +20,6 @@ public class Product {
     private String name;
     private double price;
     private int quantityAvailable;
-    @JsonIgnore
     private Long supplierId;
     @Transient
     private Supplier supplier;

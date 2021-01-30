@@ -1,5 +1,5 @@
 <div class="row m-1" *ngIf="products && products.length > 0">
-  <div class="btn btn-primary btn-block m-2 text-center" *ngIf="this.app.getCartsProducts().length > 0">
+  <div class="btn btn-primary btn-block m-2 text-center" (click)="this.modalService.open(contentBill)" *ngIf="this.app.getCartsProducts().length > 0">
     Buy <i class="fas fa-shopping-cart"></i>
   </div>
   <div class="card col-3 p-0" *ngFor="let e of this.products">
@@ -56,8 +56,29 @@
         <div class="d-flex w-100 justify-content-between">
           <h5 class="mb-1">Email : </h5>
         </div>
-        <small>{{this.currentSupplier.mail}}</small>
+        <small>{{this.currentSupplier.email}}</small>
       </a>
     </div>
+  </div>
+</ng-template>
+
+
+<ng-template #contentBill let-modalBill>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-bill-title">Billing : ${{this.getSym()}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modalBill.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="list-group" *ngIf="this.app.getCartsProducts().length > 0">
+      <a href="javascript:void(0)" *ngFor="let e of this.app.getCartsProducts()" class="list-group-item list-group-item-action flex-column align-items-start">
+        <div class="d-flex w-100 justify-content-between">
+          <h6>{{e.selectedQuantity}} of {{e.name}} with : ${{(e.selectedQuantity*e.price)/10}}</h6>
+          <img src="{{this.url}}icon/{{e.id}}" style="max-width:50px;max-height: 50px;" alt="image">
+        </div>
+      </a>
+    </div>
+    <button type="button" class="btn btn-primary btn-block" (click)="this.buy()">Buy</button>
   </div>
 </ng-template>

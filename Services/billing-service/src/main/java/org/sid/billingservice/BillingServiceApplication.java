@@ -7,6 +7,7 @@ import org.sid.billingservice.Model.Customer;
 import org.sid.billingservice.Model.Order;
 import org.sid.billingservice.Repository.OrderRepository;
 import org.sid.billingservice.Repository.BillRepository;
+import org.sid.billingservice.Repository.OrderService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -26,7 +27,7 @@ public class BillingServiceApplication{
     }
 
     @Bean
-    CommandLineRunner start(RepositoryRestConfiguration configuration, CustomerRestClient customerRestClient, BillRepository billRepository, ProductRestClient productRestClient, OrderRepository orderRepository){
+    CommandLineRunner start(RepositoryRestConfiguration configuration, CustomerRestClient customerRestClient, BillRepository billRepository, ProductRestClient productRestClient, OrderService orderService){
         return args ->{
             configuration.exposeIdsFor(Bill.class);
             configuration.exposeIdsFor(Order.class);
@@ -46,7 +47,7 @@ public class BillingServiceApplication{
                     order.setBill(bill);
                     order.setProductId(prod.getId());
                     order.setQuantity((int) Math.ceil(Math.random()*2));
-                    orderRepository.save(order);
+                    orderService.Save(order);
                 }
             }
         };

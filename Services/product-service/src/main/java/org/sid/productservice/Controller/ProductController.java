@@ -45,6 +45,11 @@ public class ProductController {
         if(file != null) saveFile(System.getProperty("user.home")+"/e-commerce/products", prod.getId()+".jpg", file);
         return prod;
     }
+    @PostMapping(value = "save")
+    public Product save(@RequestBody Product product){
+        product.setSupplier(supplierRestClient.getSupplierById(product.getSupplierId()));
+        return productRepository.save(product);
+    }
     @GetMapping(value = "get/{id}")
     public Product getOne(@PathVariable Long id){
         var tmp = productRepository.findById(id).get();

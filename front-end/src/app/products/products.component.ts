@@ -3,6 +3,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 import {ProductService} from './product.service';
 import {AppComponent} from '../app.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-products',
@@ -15,7 +16,7 @@ export class ProductsComponent implements OnInit {
   currentSupplier:any;
   public url:String = 'http://localhost:8888/PRODUCT-SERVICE/';
 
-  constructor(private service:ProductService,private modalService: NgbModal,public app:AppComponent) { }
+  constructor(private service:ProductService,public modalService: NgbModal,public app:AppComponent) { }
 
   ngOnInit(): void {
     let arr:Array<any> = this.app.getCartsProducts();
@@ -46,5 +47,26 @@ export class ProductsComponent implements OnInit {
   addToCart(product:any){
     product.added = !product.added;
     this.app.setCartsProducts(product);
+  }
+
+  buy() {
+    this.service.buy(this.app.getCartsProducts()).subscribe(v =>{
+      Swal.fire(
+        'Success!',
+        'Successfully bought!',
+        'success'
+      ).then(()=>{
+        location.reload();
+      });
+    },(er)=>{
+      console.error(er);
+    })
+  }
+  getSym(){
+    let sum:number = 0;
+    this.app.getCartsProducts().forEach(function(e){
+      sum += parseFloat(e.selectedQuantity)*parseFloat(e.price);
+    });
+    return sum/10;
   }
 }

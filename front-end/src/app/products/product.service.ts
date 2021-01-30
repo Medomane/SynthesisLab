@@ -6,6 +6,7 @@ import {HttpClient} from "@angular/common/http";
 })
 export class ProductService {
   public path:String = 'http://localhost:8083/';
+  public ordersPath:String = 'http://localhost:8084/';
   constructor(private http: HttpClient) { }
   getProducts(){
     return this.http.get(this.path+'get');
@@ -23,5 +24,12 @@ export class ProductService {
   }
   deleteProduct(id:any) {
     return this.http.delete(this.path+'products/'+id);
+  }
+  buy(cartsProducts: Array<any>) {
+    let orders: any[] = [];
+    cartsProducts.forEach(function(e){
+      orders.push({quantity:e.selectedQuantity,product:e});
+    });
+    return this.http.post(this.ordersPath+'buy/1',orders);
   }
 }
