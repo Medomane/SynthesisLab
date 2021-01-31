@@ -2,9 +2,7 @@ package org.sid.supplierservice.Controller;
 
 import org.sid.supplierservice.Model.Supplier;
 import org.sid.supplierservice.Repository.SupplierRepository;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,8 +15,23 @@ public class SupplierController {
         this.supplierRepository = supplierRepository;
     }
 
-    @GetMapping("/getSuppliers")
-    public List<Supplier> getAll(){
+    @GetMapping("/suppliers")
+    public List<Supplier> get(){
         return supplierRepository.findAll();
+    }
+
+    @GetMapping("/suppliers/{id}")
+    public Supplier get(@PathVariable Long id){
+        return supplierRepository.findById(id).get();
+    }
+
+    @PostMapping("/suppliers")
+    public Supplier save(@RequestBody Supplier supplier){
+        return supplierRepository.save(supplier);
+    }
+
+    @DeleteMapping("/suppliers/{id}")
+    public void delete(@PathVariable Long id){
+        supplierRepository.deleteById(id);
     }
 }
