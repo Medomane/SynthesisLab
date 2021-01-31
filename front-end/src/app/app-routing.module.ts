@@ -13,7 +13,6 @@ const routes: Routes = [
   {path: 'customers', component: CustomersComponent},
   {path: 'bills', component: OrdersComponent},
   {path: 'products', component: ProductsComponent},
-  {path: 'home', component: HomeComponent},
   {path: '**', component: HomeComponent}
 ];
 

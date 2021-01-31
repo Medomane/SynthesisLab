@@ -14,7 +14,6 @@ keycloak:
   realm: MySynthesisLab-realm
   auth-server-url: http://localhost:8080/auth
   resource: customers-app
-  use-resource-role-mappings: true
   bearer-only: true
 management:
   endpoints:

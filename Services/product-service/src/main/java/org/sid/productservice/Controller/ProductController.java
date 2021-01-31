@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
+@CrossOrigin("*")
 public class ProductController {
     private final ProductRepository productRepository;
     private final SupplierRestClient supplierRestClient;
@@ -43,7 +44,7 @@ public class ProductController {
         return tmp;
     }
 
-    @PostMapping(value = "products/save")
+    @PostMapping(value = "/products/save")
     public Product upload(@RequestParam String product ,@RequestParam(value = "image",required = false) MultipartFile file) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         Product obj = mapper.readValue(product, Product.class);
@@ -53,7 +54,7 @@ public class ProductController {
         if(file != null) prod.saveFile(file);
         return prod;
     }
-    @PostMapping(value = "products/update")
+    @PostMapping(value = "/products/update")
     public Product save(@RequestBody Product product){
         product.setSupplier(supplierRestClient.getSupplierById(product.getSupplierId()));
         return productRepository.save(product);

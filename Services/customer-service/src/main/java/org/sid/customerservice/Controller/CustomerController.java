@@ -25,6 +25,11 @@ public class CustomerController {
         return customerRepository.findById(id).get();
     }
 
+    @GetMapping("/customers/byEmail/{email}")
+    public Customer get(@PathVariable String email){
+        return customerRepository.findByEmail(email).get(0);
+    }
+
     @PostMapping("/customers")
     public Customer save(@RequestBody Customer supplier){
         return customerRepository.save(supplier);

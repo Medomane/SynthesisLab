@@ -10,13 +10,11 @@
           <img class="img-responsive img-rounded" src="assets/person-male.png" alt="User picture">
         </div>
         <div class="user-info">
-          <span class="user-name">Hammane
-            <strong>Med</strong>
-          </span>
-          <span class="user-role">Administrator</span>
+          <span class="user-name">{{this.sidebarService.data.preferred_username}}</span>
+          <span class="user-role">{{this.sidebarService.data.name}}</span>
           <span class="user-status">
             <i class="fa fa-circle"></i>
-            <span>Online</span>
+            <span>{{this.sidebarService.data.email}}</span>
           </span>
         </div>
       </div>

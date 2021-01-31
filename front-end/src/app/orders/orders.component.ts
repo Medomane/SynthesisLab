@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {AppComponent} from '../app.component';
-import {OrderService} from './order.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -11,10 +10,10 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 export class OrdersComponent implements OnInit {
   rowData:any[] = [];
   currentBill: any;
-  constructor(public service:OrderService,private modalService: NgbModal,public app:AppComponent) {}
+  constructor(private modalService: NgbModal,public app:AppComponent) {}
 
   ngOnInit(): void {
-    this.service.getOrders().subscribe(v =>{
+    this.app.http.get(this.app.billingUrl+"bills/byCustomer/"+this.app.getUserId()).subscribe(v =>{
       // @ts-ignore
       this.rowData = v;
       this.app.subTitle = 'Orders';

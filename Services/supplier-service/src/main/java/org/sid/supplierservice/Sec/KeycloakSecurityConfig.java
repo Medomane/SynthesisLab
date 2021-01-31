@@ -26,5 +26,6 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
             .antMatchers(HttpMethod.GET).permitAll()
             .antMatchers(HttpMethod.POST).hasAuthority("SUPPLIER_MANAGER")
             .antMatchers(HttpMethod.DELETE).hasAuthority("SUPPLIER_MANAGER");
+        http.csrf().disable();
     }
 }

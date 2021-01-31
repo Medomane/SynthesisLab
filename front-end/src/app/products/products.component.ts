@@ -14,13 +14,12 @@ export class ProductsComponent implements OnInit {
 
   products: Array<any> = [];
   currentSupplier:any;
-  public url:String = 'http://localhost:8888/PRODUCT-SERVICE/';
 
   constructor(private service:ProductService,public modalService: NgbModal,public app:AppComponent) { }
 
   ngOnInit(): void {
     let arr:Array<any> = this.app.getCartsProducts();
-    this.service.getProducts().subscribe(v =>{
+    this.service.getProducts(this.app.productsUrl).subscribe(v =>{
       // @ts-ignore
       this.products = v;
       this.products.map((e)=>{
@@ -50,7 +49,7 @@ export class ProductsComponent implements OnInit {
   }
 
   buy() {
-    this.service.buy(this.app.getCartsProducts()).subscribe(v =>{
+    this.service.buy(this.app.getCartsProducts(),this.app.billingUrl+"orders/buy/"+this.app.getUserId(),this.app.keyCloak.getHeader()).subscribe(() =>{
       Swal.fire(
         'Success!',
         'Successfully bought!',

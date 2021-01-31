@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { SidebarService } from './sidebar/sidebar.service';
+import {KeyCloakService} from './sec/key-cloak.service';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +11,12 @@ import { SidebarService } from './sidebar/sidebar.service';
 export class AppComponent {
   title = 'e-commerce';
   public subTitle = 'Home';
-  constructor(private sidebarService: SidebarService) {
+  public suppliersUrl:string = 'http://localhost:8081/suppliers/' ;
+  public customersUrl:string = 'http://localhost:8082/customers/' ;
+  public productsUrl:string = 'http://localhost:8083/products/' ;
+  public billingUrl:string = 'http://localhost:8084/' ;
+
+  constructor(public http:HttpClient,private sidebarService: SidebarService,public keyCloak:KeyCloakService) {
 
   }
   toggleSidebar() {
@@ -28,5 +35,10 @@ export class AppComponent {
     if (month.length < 2) month = '0' + month;
     if (day.length < 2) day = '0' + day;
     return [year, month, day].join('-');
+  }
+
+  public getUserId(){
+    let id = localStorage.getItem("userId");
+    return !id?0:parseInt(id);
   }
 }

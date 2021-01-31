@@ -4,7 +4,6 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AppComponent} from '../app.component';
 import {ProductService} from '../products/product.service';
 import Swal from 'sweetalert2';
-import {SupplierService} from '../suppliers/supplier.service';
 
 @Component({
   selector: 'app-products-cog',
@@ -21,18 +20,18 @@ export class ProductsCogComponent implements OnInit {
   public message: string='';
   submitted:boolean = false;
   isEditing:boolean = false;
-  constructor(public service:ProductService,private supplierService:SupplierService,private modalService: NgbModal,public app:AppComponent, private formBuilder: FormBuilder) {
+  constructor(public service:ProductService,private modalService: NgbModal,public app:AppComponent, private formBuilder: FormBuilder) {
   }
 
   ngOnInit(): void {
-    this.service.getProducts().subscribe(v =>{
+    this.app.http.get(this.app.productsUrl).subscribe(v =>{
       // @ts-ignore
       this.rowData = v;
       this.app.subTitle = 'Products';
       this.setValidators();
-      this.supplierService.getSuppliers().subscribe(supp=>{
+      this.app.http.get(this.app.suppliersUrl).subscribe(supp=>{
         // @ts-ignore
-        this.suppliers = supp._embedded.suppliers;
+        this.suppliers = supp;
       });
     },(er)=>{
       console.error(er);
@@ -61,7 +60,7 @@ export class ProductsCogComponent implements OnInit {
     this.productForm.controls["price"].setValue(product.price);
     this.productForm.controls["quantityAvailable"].setValue(product.quantityAvailable);
     this.productForm.controls["supplierId"].setValue(product.supplier.id);
-    this.currentImage = this.service.path+"icon/"+product.id;
+    this.currentImage = this.app.productsUrl+product.id+"/icon";
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'});
   }
   delete(product: any){
@@ -97,7 +96,7 @@ export class ProductsCogComponent implements OnInit {
       return ;
     }
     if (this.productForm.invalid) { return; }
-    this.service.saveProduct(this.productForm.value,this.currentImageFile).subscribe(v1 => {
+    this.service.saveProduct(this.productForm.value,this.currentImageFile,this.app.productsUrl,this.app.keyCloak.getHeader()).subscribe(v1 => {
       if(!this.isEditing) {
         console.log(v1);
         this.rowData.push(v1);

@@ -1,22 +1,8 @@
 package org.sid.billingservice;
 
-import org.sid.billingservice.Feign.CustomerRestClient;
-import org.sid.billingservice.Feign.ProductRestClient;
-import org.sid.billingservice.Model.Bill;
-import org.sid.billingservice.Model.Customer;
-import org.sid.billingservice.Model.Order;
-import org.sid.billingservice.Repository.OrderRepository;
-import org.sid.billingservice.Repository.BillRepository;
-import org.sid.billingservice.Repository.OrderService;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
-import org.springframework.context.annotation.Bean;
-import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
-
-import java.util.Calendar;
-import java.util.Date;
 
 @SpringBootApplication
 @EnableFeignClients
@@ -26,11 +12,9 @@ public class BillingServiceApplication{
         SpringApplication.run(BillingServiceApplication.class, args);
     }
 
-    @Bean
-    CommandLineRunner start(RepositoryRestConfiguration configuration, CustomerRestClient customerRestClient, BillRepository billRepository, ProductRestClient productRestClient, OrderService orderService){
+    /*@Bean
+    CommandLineRunner start(CustomerRestClient customerRestClient, BillRepository billRepository, ProductRestClient productRestClient, OrderRepository orderRepository){
         return args ->{
-            configuration.exposeIdsFor(Bill.class);
-            configuration.exposeIdsFor(Order.class);
             Customer customer=customerRestClient.getCustomerById(1L);
             for (int i = 0; i < 3; i++) {
                 Calendar c = Calendar.getInstance();
@@ -47,9 +31,9 @@ public class BillingServiceApplication{
                     order.setBill(bill);
                     order.setProductId(prod.getId());
                     order.setQuantity((int) Math.ceil(Math.random()*2));
-                    orderService.Save(order);
+                    orderRepository.save(order);
                 }
             }
         };
-    }
+    }*/
 }

@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AppComponent} from '../app.component';
-import {CustomerService} from './customer.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import Swal from 'sweetalert2';
 
@@ -15,17 +14,17 @@ export class CustomersComponent implements OnInit {
   rowData:any[] = [];
   // @ts-ignore
   public customerForm: FormGroup;
-  public message: string;
+  public message: string='';
   submitted:boolean = false;
   isEditing:boolean = false;
-  constructor(public service:CustomerService,private modalService: NgbModal,public app:AppComponent, private formBuilder: FormBuilder) {
-    this.message = '';
+
+  constructor(private modalService: NgbModal,public app:AppComponent, private formBuilder: FormBuilder) {
   }
 
   ngOnInit(): void {
-    this.service.getCustomers().subscribe(v =>{
+    this.app.http.get(this.app.customersUrl).subscribe(v =>{
       // @ts-ignore
-      this.rowData = v._embedded.customers;
+      this.rowData = v;
       this.app.subTitle = 'Customers';
       this.setValidators();
     },(er)=>{
@@ -34,12 +33,11 @@ export class CustomersComponent implements OnInit {
   }
 
   open(content:any) {
-    this.submitted = false;
     this.isEditing = false;
-    this.message = '';
-    this.customerForm.controls.id.setValue(null);
+    this.onReset();
     this.modalService.open(content);
   }
+
   private setValidators() {
     this.customerForm = this.formBuilder.group({
       id: [''],
@@ -59,6 +57,7 @@ export class CustomersComponent implements OnInit {
     this.customerForm.controls["email"].setValue(customer.email);
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'});
   }
+
   delete(customer: any){
     Swal.fire({
       title: 'Confirmation' ,
@@ -71,7 +70,7 @@ export class CustomersComponent implements OnInit {
       confirmButtonText: 'Yes!'
     }).then((result) => {
       if (result.value) {
-        this.service.deleteCustomer(customer.id).subscribe(() => {
+        this.app.http.delete(this.app.customersUrl+customer.id,{headers:this.app.keyCloak.getHeader()}).subscribe(() => {
           Swal.fire(
             'Success!',
             'Deleted successfully!',
@@ -84,12 +83,11 @@ export class CustomersComponent implements OnInit {
     });
   }
 
-
   onSubmit() {
     this.message = '';
     this.submitted = true;
     if (this.customerForm.invalid) { return; }
-    this.service.saveCustomer(this.customerForm.value).subscribe(v1 => {
+    this.app.http.post(this.app.customersUrl,this.customerForm.value,{headers:this.app.keyCloak.getHeader()}).subscribe(v1 => {
       if(!this.isEditing) {
         this.rowData.push(v1);
         this.message = "Added successfully.";
@@ -111,7 +109,7 @@ export class CustomersComponent implements OnInit {
 
   onReset() {
     this.submitted = false;
+    this.message = '';
     this.customerForm.reset();
   }
-
 }

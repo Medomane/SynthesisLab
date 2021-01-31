@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import {SidebarService} from './sidebar.service';
 import {ItemModule} from './item/item.module';
@@ -15,13 +15,10 @@ import {ItemModule} from './item/item.module';
     ])
   ]
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent{
   menus : ItemModule[] = [];
   constructor(public sidebarService: SidebarService) {
     this.menus = sidebarService.getMenuList();
-  }
-
-  ngOnInit() {
   }
 
   getSideBarState() {

@@ -3,7 +3,6 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AppComponent} from '../app.component';
 import Swal from 'sweetalert2';
-import {SupplierService} from './supplier.service';
 
 @Component({
   selector: 'app-suppliers',
@@ -15,17 +14,16 @@ export class SuppliersComponent implements OnInit {
   rowData:any[] = [];
   // @ts-ignore
   public supplierForm: FormGroup;
-  public message: string;
+  public message: string='';
   submitted:boolean = false;
   isEditing:boolean = false;
-  constructor(public service:SupplierService,private modalService: NgbModal,public app:AppComponent, private formBuilder: FormBuilder) {
-    this.message = '';
+  constructor(private modalService: NgbModal,public app:AppComponent, private formBuilder: FormBuilder) {
   }
 
   ngOnInit(): void {
-    this.service.getSuppliers().subscribe(v =>{
+    this.app.http.get(this.app.suppliersUrl).subscribe(v =>{
       // @ts-ignore
-      this.rowData = v._embedded.suppliers;
+      this.rowData = v;
       this.app.subTitle = 'Suppliers';
       this.setValidators();
     },(er)=>{
@@ -34,12 +32,11 @@ export class SuppliersComponent implements OnInit {
   }
 
   open(content:any) {
-    this.submitted = false;
     this.isEditing = false;
-    this.message = '';
-    this.supplierForm.controls.id.setValue(null);
+    this.onReset();
     this.modalService.open(content);
   }
+
   private setValidators() {
     this.supplierForm = this.formBuilder.group({
       id: [''],
@@ -59,6 +56,7 @@ export class SuppliersComponent implements OnInit {
     this.supplierForm.controls["email"].setValue(supplier.email);
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'});
   }
+
   delete(supplier: any){
     Swal.fire({
       title: 'Confirmation' ,
@@ -71,7 +69,7 @@ export class SuppliersComponent implements OnInit {
       confirmButtonText: 'Yes!'
     }).then((result) => {
       if (result.value) {
-        this.service.deleteSupplier(supplier.id).subscribe(() => {
+        this.app.http.delete(this.app.suppliersUrl+supplier.id,{headers:this.app.keyCloak.getHeader()}).subscribe(() => {
           Swal.fire(
             'Success!',
             'Deleted successfully!',
@@ -84,12 +82,11 @@ export class SuppliersComponent implements OnInit {
     });
   }
 
-
   onSubmit() {
     this.message = '';
     this.submitted = true;
     if (this.supplierForm.invalid) { return; }
-    this.service.saveSupplier(this.supplierForm.value).subscribe(v1 => {
+    this.app.http.post(this.app.suppliersUrl,this.supplierForm.value,{headers:this.app.keyCloak.getHeader()}).subscribe(v1 => {
       if(!this.isEditing) {
         this.rowData.push(v1);
         this.message = "Added successfully.";
@@ -110,6 +107,7 @@ export class SuppliersComponent implements OnInit {
   }
 
   onReset() {
+    this.message = '';
     this.submitted = false;
     this.supplierForm.reset();
   }

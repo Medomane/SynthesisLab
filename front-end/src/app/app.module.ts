@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -22,10 +22,15 @@ import { CustomersComponent } from './customers/customers.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import { SuppliersComponent } from './suppliers/suppliers.component';
 import { ProductsCogComponent } from './products-cog/products-cog.component';
+import {KeyCloakService} from './sec/key-cloak.service';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
 };
+
+export function kcFactory(kcService:KeyCloakService) {
+  return () => kcService.init();
+}
 
 @NgModule({
   declarations: [
@@ -50,10 +55,18 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     NgbAlertModule,
     ReactiveFormsModule
   ],
-  providers: [ {
-    provide: PERFECT_SCROLLBAR_CONFIG,
-    useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
-  }],
+  providers: [
+    {
+      provide: PERFECT_SCROLLBAR_CONFIG,
+      useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG,
+    },
+    {
+      provide: APP_INITIALIZER,
+      deps:[KeyCloakService],
+      useFactory: kcFactory,
+      multi:true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

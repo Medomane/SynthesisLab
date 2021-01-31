@@ -9,7 +9,12 @@ spring:
     password:
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
+keycloak:
+  realm: MySynthesisLab-realm
+  auth-server-url: http://localhost:8080/auth
+  resource: bills-app
+  bearer-only: true
 management:
   endpoints:
     web:

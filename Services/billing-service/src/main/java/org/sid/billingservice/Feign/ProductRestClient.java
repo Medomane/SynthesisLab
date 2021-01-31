@@ -12,7 +12,4 @@ public interface ProductRestClient {
 
     @GetMapping(path = "/products/{id}")
     Product getProductById(@PathVariable(name = "id") Long id);
-
-    @PostMapping(path = "/save")
-    Product saveProduct(@RequestBody Product product);
 }

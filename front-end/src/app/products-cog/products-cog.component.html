@@ -1,4 +1,8 @@
-<table class="table table-bordered w-100">
+<div class="container text-center" *ngIf="!app.keyCloak.isProductManager()">
+  <h1 class="text-center">403</h1>
+  <h3 class="text-center">ACCESS FORBIDDEN</h3>
+</div>
+<table class="table table-bordered w-100" *ngIf="app.keyCloak.isProductManager()">
   <thead>
   <tr>
     <th>Name</th>

@@ -31,14 +31,15 @@ public class Product {
     private Long supplierId;
     @Transient
     private Supplier supplier;
+    @JsonIgnore
     public String getImagePath(){
-        return getImagesPath()+"/"+id+"("+getName()+").jpg";
+        return getImagesPath()+"/"+id+".jpg";
     }
     public static String getImagesPath(){
         return System.getProperty("user.home")+"/e-commerce/products" ;
     }
     public void saveFile(MultipartFile multipartFile) throws IOException {
-        var fileName = getId()+"("+getName()+").jpg";
+        var fileName = getId()+".jpg";
         Path uploadPath = Paths.get(Product.getImagesPath());
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);

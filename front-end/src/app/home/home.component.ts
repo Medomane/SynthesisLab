@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {HomeService} from './home.service';
 // @ts-ignore
 import * as CanvasJS from '../../assets/canvasjs.js';
 import {AppComponent} from '../app.component';
@@ -11,18 +10,14 @@ import {AppComponent} from '../app.component';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private service:HomeService,private app:AppComponent) { }
+  constructor(private app:AppComponent) { }
 
   ngOnInit(): void {
-    this.loadData();
-  }
-
-  loadData(){
     let dataPoints:any[] = [];
     let tmp = this.app.formatDate;
-    this.service.getInfoPerDay().subscribe(value => {
+    this.app.http.get(this.app.billingUrl+"bills/byDays/"+this.app.getUserId()).subscribe(value => {
       // @ts-ignore
-      value.forEach(function(e,i){
+      value.forEach(function(e){
         dataPoints.push({y:parseInt(e[1]),label:tmp(e[0])});
       });
       let chart = new CanvasJS.Chart("chartContainer1", {

@@ -1,4 +1,4 @@
-package org.sid.customerservice.Sec;
+package org.sid.billingservice.Sec;
 
 import org.keycloak.adapters.springsecurity.KeycloakConfiguration;
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
@@ -23,9 +23,8 @@ public class KeycloakSecurityConfig extends KeycloakWebSecurityConfigurerAdapter
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
         http.authorizeRequests()
-                .antMatchers(HttpMethod.GET).permitAll()
-                .antMatchers(HttpMethod.POST).hasAuthority("CUSTOMER_MANAGER")
-                .antMatchers(HttpMethod.DELETE).hasAuthority("CUSTOMER_MANAGER");
+            .antMatchers(HttpMethod.GET).permitAll()
+            .antMatchers(HttpMethod.POST).authenticated();
         http.csrf().disable();
     }
 }
