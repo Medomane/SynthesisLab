@@ -11,6 +11,6 @@ import java.util.Collection;
 public interface SupplierRestClient {
     @GetMapping(path = "/suppliers/{id}")
     Supplier getSupplierById(@PathVariable(name = "id") Long id);
-    @GetMapping(path = "/getSuppliers")
+    @GetMapping(path = "/suppliers")
     Collection<Supplier> getSuppliers();
 }
