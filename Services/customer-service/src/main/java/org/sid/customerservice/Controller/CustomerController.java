@@ -39,4 +39,9 @@ public class CustomerController {
     public void delete(@PathVariable Long id){
         customerRepository.deleteById(id);
     }
+
+    @GetMapping(value = "/customers/count")
+    public int count(){
+        return customerRepository.countAllByIdNotNull();
+    }
 }

@@ -63,4 +63,9 @@ public class ProductController {
     public void delete(@PathVariable Long id){
         productRepository.deleteById(id);
     }
+
+    @GetMapping(value = "/products/count")
+    public int count(){
+        return productRepository.countAllByIdNotNull();
+    }
 }

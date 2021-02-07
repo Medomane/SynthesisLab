@@ -37,7 +37,6 @@ public class OrderController {
 
     @PostMapping("orders/buy/{customerId}")
     public void buy(@RequestBody Collection<Order> orders, @PathVariable Long customerId){
-        System.out.println(customerId);
         var bill = new Bill();
         bill.setDate(new Date());
         bill.setCustomerId(customerId);

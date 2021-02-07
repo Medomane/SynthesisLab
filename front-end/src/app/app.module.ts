@@ -7,6 +7,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 
+import { NgxsWebsocketPluginModule } from '@ngxs/websocket-plugin'
+import { NgxsModule } from '@ngxs/store'
+import { KafkaState } from './state/kafka.state';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
@@ -53,7 +56,13 @@ export function kcFactory(kcService:KeyCloakService) {
     BadgeModule,
     HttpClientModule,
     NgbAlertModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxsModule.forRoot([
+      KafkaState
+    ]),
+    NgxsWebsocketPluginModule.forRoot({
+      url: 'ws://localhost:8086/websocket'
+    })
   ],
   providers: [
     {
